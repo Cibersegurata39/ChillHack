@@ -17,9 +17,10 @@ Explicar la realización del siguiente _Capture the flag_ perteneciente a la pla
 ## Que hemos aprendido?
 
 - Realizar *fingerprinting* y enumeración de puertos y enumeración web.
-- 
+- Realizar una conxexión FTP.
 - Realizar una *reverse shell*.
 - Poner en escucha los puertos de la máquina.
+- 
 - Escalada de privilegios.
 
 ## Herramientas utilizadas
