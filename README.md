@@ -48,10 +48,19 @@ Primero nos dirigimos, desde el navegador, al puerot 80 de la IP dada, donde se 
 
 Seguidamente, con la ayuda de la herramienta **Dirsearch**, se hace una enumeración de posibles directorios y archivos que se encuentren en la web. Por la parte de directorios, aparecen varios pero llama la atención '/secret/', al cual nos dirigiremos primero. *Dirsearch* es lanzado con **Python3** indicando la IP a atacar (-u) y la lista a utilizar para la enumeración (-w); en este caso la 'directory-list-lowercase-2.3-small.txt'.
 
+<code>sudo python3 /usr/lib/python3/dist-packages/dirsearch/dirsearch.py -u 10.10.198.179 -w /usr/share/wordlists/dirbuster/directory-list-lowercase-2.3-small.txt</code>
+
 ![Captura de pantalla 2025-04-12 183016](https://github.com/user-attachments/assets/5d917c94-9d13-4a58-8966-c37cae458572)
 
+En el directorio '/secret' se encuentra un panel de comandos el cual tiene una *blacklist* por medio de la cual está filtrando e impidiendo utilizar una serie de palabras. Cada vez que salta este filtro, se muestra una imagen de alerta y un mensaje preguntando '¿eres un hacker?'. Después de realizar varias pruebas, se ha comprobado que hay maneras de saltarse el filtro como concatenando un comando válido con otro por medio de ';'. U ofuscando paalbras, cambiando caracteres por el signo de interrogació, por poner un ejemplo.
 
 ### Vulnerabilidades explotadas
+
+Por una parte, se realiza la conexión *FTP* indicando la IP de la víctima, donde se encuentra un documento donde se mencionan 2 posibles usuarios del sistema 'Anurodh' y 'Apaar', e informa del filtrado que ya se ha comprobado en el formulario anterior: *Anurodh told me that there is some filtering on strings being put in the command -- Apaar*.
+
+<code>ftp 10.10.198.179</code>
+
+![Captura de pantalla 2025-04-12 175910](https://github.com/user-attachments/assets/5c4f80d6-b28d-424f-b830-a074bf2a182b)
 
 
 **Flag: **
