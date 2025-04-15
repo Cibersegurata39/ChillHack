@@ -8,6 +8,10 @@ Máquina resuelta de *TryHackMe* en la que se trabaja la enumeración y *fingerp
   <img src="https://img.shields.io/badge/-Bash-4EAA25?style=for-the-badge&logo=gnubash&logoColor=white" />
   <img src="https://img.shields.io/badge/-python-3776AB?style=for-the-badge&logo=python&logoColor=white" />
   <img src="https://img.shields.io/badge/-Netcat-F5455C?style=for-the-badge&logo=netcat&logoColor=white" />
+  <img src="https://img.shields.io/badge/-steghide-FF5200?style=for-the-badge&logo=steghide&logoColor=white" />
+  unzip
+  zip2john
+  john
 </div>
 
 ## Objetivo
@@ -20,14 +24,18 @@ Explicar la realización del siguiente _Capture the flag_ perteneciente a la pla
 - Realizar una conxexión FTP.
 - Realizar una *reverse shell*.
 - Poner en escucha los puertos de la máquina.
-- 
+- Obtener una *shell* a partir de un *script*.
+- Crear un servidor con *python3*.
+- Obtener información oculta en imágenes.
+- Descomprimir archivos.
+- Crackear contraseñas.
 - Escalada de privilegios.
 
 ## Herramientas utilizadas
 
 - *Kali Linux*.
 - Enumeración: *Nmap*, *Dirsearch*.
-- Penetración: *FTP*, *Bash*, *PHP*, *Netcat*. 
+- Penetración: *FTP*, *Bash*, *PHP*, *Netcat*, *Python3*, *Steghide*,  *Unzip*, *Zip2john*, *John*. 
 
 ## Steps
 
@@ -90,10 +98,19 @@ A continuación se inspecciona el contenido del directorio '/var/www/files' en e
 
 ![Captura de pantalla 2025-04-13 213653](https://github.com/user-attachments/assets/52295999-99d8-499c-8ef8-48722fa0706f)
 
-Así pues, primero se debe descargar la imagen creando un servidor desde la carpeta contenedora de la imagen con el móculo *http.server*, de **Python3**. Se indica el puerto en el que se hospedará el servidor y desde el navegador se puede comprobar la creación del servidor y la existencia de la imagen y el resto de archivos del directorio en cuestión.
+Así pues, primero se debe descargar la imagen creando un servidor desde la carpeta contenedora de la imagen con el módulo *http.server*, de **Python3**. Se indica el puerto en el que se hospedará el servidor y desde el navegador se puede comprobar la creación del servidor y la existencia de la imagen y el resto de archivos del directorio en cuestión.
 
 <code> python3 -m http.server 8000</code>
 
 ![Captura de pantalla 2025-04-13 214254](https://github.com/user-attachments/assets/a45013b7-436a-4c73-a04e-4758747414f1)
 
+Desde la máquina atacante se procede a descargar el *jpg*, indicando la dirección del recurso. Seguidamente se extrae la información de la imagen con la herramienta **Steghide**, la cual vuelca los datos en el archivo 'backup.zip'. Este se puede descomprimir con la herramienta **unzip** pero está protegido con contraseña, por lo que será necesario encontrar esta primero. Inicialmente se saca el *hash* del archivo con el binario **zip2john** y después se trabajará con este.
+
+<code>wget http://10.10.118.151:8000/hacker-with-laptop_23-2147985341.jpg</code>
+
+<code>steghide extract -sf hacker-with-laptop_23-2147985341.jpg </code>
+
+<code>unzip backup.zip</code>
+
+<code>zip2john backup.zip > pwd</code>
 
