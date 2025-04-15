@@ -80,11 +80,18 @@ Para ello se ejecuta el archivo con la ruta absoluta y con el usuario 'apaar'. P
 
 <code>sudo -u apaar /home/apaar/.helpline.sh</code>
 
-
 Una vez hecho esto se comprueb el usuario alcanzado y su id.
 
 ![image](https://github.com/user-attachments/assets/45d7d820-8d96-442d-9c63-f16b6a56bee9)
 
-
-
 **Flag: {USER-FLAG: e8vpd3323cfvlp0qpxxx9qtr5iq37oww}**
+
+A continuación se inspecciona el contenido del directorio '/var/www/files' en el cual hay un archivo *php* llamado 'hacker.php' que se puede ejecutar con el usuario Apaar. En este se nombra la imagen 'hacker-with-laptop_23-2147985341.jpg' y nos induce a analizarla más allá de lo que pueda mostrar a simple vista. Una referencia clara a buscar información oculta en la imagen por medio de esteganografía.
+
+![Captura de pantalla 2025-04-13 213653](https://github.com/user-attachments/assets/52295999-99d8-499c-8ef8-48722fa0706f)
+
+Así pues, primero se debe descargar la imagen creando un servidor desde la carpeta contenedora de la imagen con el móculo *http.server*, de **Python3**. Se indica el puerto en el que se hospedará el servidor y desde el navegador se puede comprobar la creación del servidor y la existencia de la imagen y el resto de archivos del directorio en cuestión.
+
+![Captura de pantalla 2025-04-13 214254](https://github.com/user-attachments/assets/a45013b7-436a-4c73-a04e-4758747414f1)
+
+
