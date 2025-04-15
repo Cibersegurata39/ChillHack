@@ -92,6 +92,8 @@ A continuación se inspecciona el contenido del directorio '/var/www/files' en e
 
 Así pues, primero se debe descargar la imagen creando un servidor desde la carpeta contenedora de la imagen con el móculo *http.server*, de **Python3**. Se indica el puerto en el que se hospedará el servidor y desde el navegador se puede comprobar la creación del servidor y la existencia de la imagen y el resto de archivos del directorio en cuestión.
 
+<code> python3 -m http.server 8000</code>
+
 ![Captura de pantalla 2025-04-13 214254](https://github.com/user-attachments/assets/a45013b7-436a-4c73-a04e-4758747414f1)
 
 
