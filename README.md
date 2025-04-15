@@ -9,9 +9,9 @@ Máquina resuelta de *TryHackMe* en la que se trabaja la enumeración y *fingerp
   <img src="https://img.shields.io/badge/-python-3776AB?style=for-the-badge&logo=python&logoColor=white" />
   <img src="https://img.shields.io/badge/-Netcat-F5455C?style=for-the-badge&logo=netcat&logoColor=white" />
   <img src="https://img.shields.io/badge/-steghide-FF5200?style=for-the-badge&logo=steghide&logoColor=white" />
-  unzip
-  zip2john
-  john
+  <img src="https://img.shields.io/badge/-unzip-000000?style=for-the-badge&logo=unzip&logoColor=white" />
+  <img src="https://img.shields.io/badge/-zip2john-EBAF00?style=for-the-badge&logo=zip2john&logoColor=white" />
+  <img src="https://img.shields.io/badge/-john-F4B942?style=for-the-badge&logo=john&logoColor=white" />
 </div>
 
 ## Objetivo
@@ -83,7 +83,7 @@ Con todo esto solo es necesario habilitar un puerto en escucha de la máquina at
 
 ![Captura de pantalla 2025-04-13 205517](https://github.com/user-attachments/assets/9e321c4d-87e2-4b48-9847-503742a49d91)
 
-Hecho esto se consigue una *shell* y se comprueba que somos el usuario 'www-data'. En el directorio '/home' aparecen 3 usuarios, de los cuales se tiene acceso a la carpeta de 'apaar'. Dentro de esta, se encuentra un archivo 'local.txt' donde se encuentra el código *php* de la web del panel de comandos y se observa una *blacklist* con las palabras prohibidas para introducir, por las cuales saltaba anteriormente el mensaje de alerta. Pero más interesante es el archivo oculto'.helpline.sh', el cual es un *script* que pide introducir el nombre de la persona con la quie quieres hablar y el mensaje que le quieres dejar. Puesto que no se sanitizan las posibles entradas por teclado, esto se puede utilizar para hacer aparecer la *shell* de Apaar y de esta manera obtener acceso a su usuario.
+Hecho esto se consigue una *shell* y se comprueba que somos el usuario 'www-data'. En el directorio '/home' aparecen 3 usuarios, de los cuales se tiene acceso a la carpeta de 'apaar'. Dentro de esta, se encuentra el archivo oculto '.helpline.sh', el cual es un *script* que pide introducir el nombre de la persona con la que quieres hablar y el mensaje que le quieres dejar. Puesto que no se sanitizan las posibles entradas por teclado, esto se puede utilizar para hacer aparecer la *shell* de Apaar y de esta manera obtener acceso a su usuario.
 Para ello se ejecuta el archivo con la ruta absoluta y con el usuario 'apaar'. Para que al provocar la *shell*, esta sea la de este usuario. Esto mismo se consigue introduciendo como respuesta a las preguntas del código <code>/bin/bash</code>.
 
 <code>sudo -u apaar /home/apaar/.helpline.sh</code>
@@ -91,6 +91,8 @@ Para ello se ejecuta el archivo con la ruta absoluta y con el usuario 'apaar'. P
 Una vez hecho esto se comprueb el usuario alcanzado y su id.
 
 ![image](https://github.com/user-attachments/assets/45d7d820-8d96-442d-9c63-f16b6a56bee9)
+
+Ahora ya se tienen los suficientes permisos para leer el archivo 'local.txt' (/home/apaar) donde se encuentra la primera de las *flags*.
 
 **Flag: {USER-FLAG: e8vpd3323cfvlp0qpxxx9qtr5iq37oww}**
 
@@ -114,3 +116,30 @@ Desde la máquina atacante se procede a descargar el *jpg*, indicando la direcci
 
 <code>zip2john backup.zip > pwd</code>
 
+![Captura de pantalla 2025-04-13 215809](https://github.com/user-attachments/assets/0a35f730-e470-4fd8-954f-b27e4078ad1d)
+
+Con **John** se prueban las diferentes palabras de la lista 'rockyou.txt' con el archivo 'pwd' que contiene el *hash* antes obtenido. Finalmente, la herramiensta encuentra la contraseña siendo esta 'pass1word'. Ahora ya se puede descomprimir el *zip* indicándole la *password* encontrada con el cual conseguimos el archivo 'source_code.php'. 
+
+<code>john --wordlist=/usr/share/wordlists/rockyou.txt pwd</code>
+
+![Captura de pantalla 2025-04-13 220330](https://github.com/user-attachments/assets/3652c4fd-c63c-444b-9d21-7608617a8926)
+
+En el código se puede ver como en una sentencia *if* iguala una contraseña con su forma en base64 para entrar dentro de la condición. Por lo que se intentará decodificar tal *password* con el siguiente comando.
+
+<code>echo "IWQwbnRLbjB3bVlwQHNzdzByZA==" | base64 -d</code>
+
+![Captura de pantalla 2025-04-13 220539](https://github.com/user-attachments/assets/3a1d4338-44cc-40d6-909c-a95dc6a3773c)
+
+Una vez obtenida la contraseña (*!d0ntKn0wmYp@ssw0rd*), se prueba con el usuario 'anurodh' y se pivota de nuevo de usuario. Además se comprueba que este pertenece al grupo *docker*, por lo que será útil para la escalada de privilegios. Esto es así porque este grupo otorga prácticamente permisos de administrador (*root*), puesto que el *daemon* de *Docker* tiene acceso completo al sistema. Así que cualquiera que esté en ese grupo podría, indirectamente, hacer cosas como *root*.
+
+Por lo que se pretenden ver las imágenes del *Docker*, que son como plantillas para crear contenedores. De las dos existentes nos quedamos con la más reciente *Apline*. Con esto se puede ir a la página [GTFOBins](https://gtfobins.github.io/gtfobins/docker/) para *bypasear* el binario *Docker* y realizar la escalada de privilegios.
+
+<code>docker images</code>
+
+<code>docker run -v /:/mnt --rm -it alpine chroot /mnt sh</code>
+
+Finalmente, se ha alcanzado el usuario *root* y solo queda dirigirse a su directorio y obtener la *flag* del archivo 'proof.txt'.
+
+![Captura de pantalla 2025-04-13 221157](https://github.com/user-attachments/assets/3a5ccc6e-22a7-44e0-8cdd-bec5a8c2c76b)
+
+**Flag:{ROOT-FLAG: w18gfpn9xehsgd3tovhk0hby4gdp89bg}**
