@@ -62,21 +62,21 @@ Seguidamente, con la ayuda de la herramienta **Dirsearch**, se hace una enumerac
 
 ![Captura de pantalla 2025-04-12 183016](https://github.com/user-attachments/assets/5d917c94-9d13-4a58-8966-c37cae458572)
 
-En el directorio '/secret' se encuentra un panel de comandos el cual tiene una *blacklist* por medio de la cual está filtrando e impidiendo utilizar una serie de palabras. Cada vez que salta este filtro, se muestra una imagen de alerta y un mensaje preguntando '¿eres un hacker?'. Después de realizar varias pruebas, se ha comprobado que hay maneras de saltarse el filtro como concatenando un comando válido con otro por medio de ';'. U ofuscando paalbras, cambiando caracteres por el signo de interrogació, por poner un ejemplo.
+En el directorio '/secret' se encuentra un panel de comandos, el cual tiene una *blacklist*, por medio de la cual, se están filtrando e impidiendo utilizar una serie de palabras. Cada vez que salta este filtro, se muestra una imagen de alerta y un mensaje preguntando '¿eres un hacker?'. Después de realizar varias pruebas, se ha comprobado que hay maneras de saltarse el filtro como concatenando un comando válido con otro por medio de ';'. U ofuscando palabras cambiando caracteres por el signo de interrogación, por poner un ejemplo.
 
 ### Vulnerabilidades explotadas
 
-Por una parte, se realiza la conexión *FTP* indicando la IP de la víctima, donde se encuentra un documento donde se mencionan 2 posibles usuarios del sistema 'Anurodh' y 'Apaar', e informa del filtrado que ya se ha comprobado en el formulario anterior: *Anurodh told me that there is some filtering on strings being put in the command -- Apaar*.
+Por una parte, se realiza la conexión *FTP* indicando la IP de la víctima, donde se encuentra un documento donde se mencionan 2 posibles usuarios del sistema 'Anurodh' y 'Apaar', e informa del filtrado que ya se ha comprobado en el formulario anterior: '*Anurodh told me that there is some filtering on strings being put in the command -- Apaar*'.
 
 <code>ftp 10.10.198.179</code>
 
 ![Captura de pantalla 2025-04-12 175910](https://github.com/user-attachments/assets/5c4f80d6-b28d-424f-b830-a074bf2a182b)
 
-Como se comentaba en el anterior apartado el panel de comandos no permite según que palabras, tales como  <code>cat</code> o <code>ls</code>. Por todo esto, lo más cómodo será realizar una **reverse shell**. Así que antes se pretende comprobar si dispone de la herramienta de **php** la máquina, para realizar el ataque con esta. Concatenando los siguiente comandos se consigue una respuesta positiva.
+Como se comentaba en el anterior apartado, el panel de comandos no permite según que palabras, tales como  <code>cat</code> o <code>ls</code>. Por todo esto, lo más cómodo será realizar una **reverse shell**. Así pues, antes se pretende comprobar si dispone de la herramienta de **php** la máquina, para realizar el ataque con esta. Concatenando los siguiente comandos se consigue una respuesta positiva.
 
 <code>pwd;php --version</code>
 
-Con todo esto solo es necesario habilitar un puerto en escucha de la máquina atacante como se ha hecho en otras ocasiones. Y visistar la página de [*Pentestmonkey*](https://pentestmonkey.net/cheat-sheet/shells/reverse-shell-cheat-sheet) para obtener el código *php* para la *reverseshell* que se introducirá en el panel.
+Con todo esto, solo es necesario habilitar un puerto en escucha de la máquina atacante como se ha hecho en otras ocasiones. Y visistar la página de [*Pentestmonkey*](https://pentestmonkey.net/cheat-sheet/shells/reverse-shell-cheat-sheet) para obtener el código *php* para la *reverse shell* que se introducirá en el panel.
 
 <code>nc -lvnp 1234</code>
 
@@ -84,12 +84,12 @@ Con todo esto solo es necesario habilitar un puerto en escucha de la máquina at
 
 ![Captura de pantalla 2025-04-13 205517](https://github.com/user-attachments/assets/9e321c4d-87e2-4b48-9847-503742a49d91)
 
-Hecho esto se consigue una *shell* y se comprueba que somos el usuario 'www-data'. En el directorio '/home' aparecen 3 usuarios, de los cuales se tiene acceso a la carpeta de 'apaar'. Dentro de esta, se encuentra el archivo oculto '.helpline.sh', el cual es un *script* que pide introducir el nombre de la persona con la que quieres hablar y el mensaje que le quieres dejar. Puesto que no se sanitizan las posibles entradas por teclado, esto se puede utilizar para hacer aparecer la *shell* de Apaar y de esta manera obtener acceso a su usuario.
+Hecho esto, se consigue una *shell* y se comprueba que somos el usuario 'www-data'. En el directorio '/home' aparecen 3 usuarios, de los cuales se tiene acceso a la carpeta de 'apaar'. Dentro de esta, se encuentra el archivo oculto '.helpline.sh', el cual es un *script* que pide introducir el nombre de la persona con la que quieres hablar y el mensaje que le quieres dejar. Puesto que no se sanitizan las posibles entradas por teclado, esto se puede utilizar para hacer aparecer la *shell* de Apaar y de esta manera, obtener acceso a su usuario.
 Para ello se ejecuta el archivo con la ruta absoluta y con el usuario 'apaar'. Para que al provocar la *shell*, esta sea la de este usuario. Esto mismo se consigue introduciendo como respuesta a las preguntas del código <code>/bin/bash</code>.
 
 <code>sudo -u apaar /home/apaar/.helpline.sh</code>
 
-Una vez hecho esto se comprueb el usuario alcanzado y su id.
+Una vez hecho esto se comprueba el usuario alcanzado y su id.
 
 ![image](https://github.com/user-attachments/assets/45d7d820-8d96-442d-9c63-f16b6a56bee9)
 
