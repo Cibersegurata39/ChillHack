@@ -12,6 +12,7 @@ Máquina resuelta de *TryHackMe* en la que se trabaja la enumeración y *fingerp
   <img src="https://img.shields.io/badge/-unzip-000000?style=for-the-badge&logo=unzip&logoColor=white" />
   <img src="https://img.shields.io/badge/-zip2john-EBAF00?style=for-the-badge&logo=zip2john&logoColor=white" />
   <img src="https://img.shields.io/badge/-john-F4B942?style=for-the-badge&logo=john&logoColor=white" />
+  <img src="https://img.shields.io/badge/-Docker-2496ED?style=for-the-badge&logo=docker&logoColor=white" />
 </div>
 
 ## Objetivo
