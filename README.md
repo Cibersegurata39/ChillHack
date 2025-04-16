@@ -89,7 +89,7 @@ Para ello se ejecuta el archivo con la ruta absoluta y con el usuario 'apaar'. P
 
 <code>sudo -u apaar /home/apaar/.helpline.sh</code>
 
-Una vez hecho esto se comprueba el usuario alcanzado y su id.
+Una vez hecho esto se comprueba el usuario alcanzado y su 'id'.
 
 ![image](https://github.com/user-attachments/assets/45d7d820-8d96-442d-9c63-f16b6a56bee9)
 
@@ -125,15 +125,15 @@ Con **John** se prueban las diferentes palabras de la lista 'rockyou.txt' contra
 
 ![Captura de pantalla 2025-04-13 220330](https://github.com/user-attachments/assets/3652c4fd-c63c-444b-9d21-7608617a8926)
 
-En el código se puede ver como en una sentencia *if* iguala una contraseña con su forma en base64 para entrar dentro de la condición. Por lo que se intentará decodificar tal *password* con el siguiente comando.
+En el código se puede ver como en una sentencia *if*, se iguala una contraseña con su forma en base64 para entrar dentro de la condición. Por lo que se intentará decodificar tal *password* con el siguiente comando.
 
 <code>echo "IWQwbnRLbjB3bVlwQHNzdzByZA==" | base64 -d</code>
 
 ![Captura de pantalla 2025-04-13 220539](https://github.com/user-attachments/assets/3a1d4338-44cc-40d6-909c-a95dc6a3773c)
 
-Una vez obtenida la contraseña (*!d0ntKn0wmYp@ssw0rd*), se prueba con el usuario 'anurodh' y se pivota de nuevo de usuario. Además se comprueba que este pertenece al grupo *docker*, por lo que será útil para la escalada de privilegios. Esto es así porque este grupo otorga prácticamente permisos de administrador (*root*), puesto que el *daemon* de *Docker* tiene acceso completo al sistema. Así que cualquiera que esté en ese grupo podría, indirectamente, hacer cosas como *root*.
+Una vez obtenida la contraseña (*!d0ntKn0wmYp@ssw0rd*), se prueba con el usuario 'anurodh' y se pivota de nuevo de usuario. Se averigua que este pertenece al grupo *docker*, por lo que será útil para la escalada de privilegios. Esto es así porque este grupo otorga prácticamente permisos de administrador (*root*), puesto que el *daemon* de *Docker* tiene acceso completo al sistema. Así que cualquiera que esté en ese grupo podría, indirectamente, hacer cosas como *root*.
 
-Por lo que se pretenden ver las imágenes del *Docker*, que son como plantillas para crear contenedores. De las dos existentes nos quedamos con la más reciente *Apline*. Con esto se puede ir a la página [GTFOBins](https://gtfobins.github.io/gtfobins/docker/) para *bypasear* el binario *Docker* y realizar la escalada de privilegios.
+Por esto se pretenden ver las imágenes del *Docker*, que son como plantillas para crear contenedores. De las dos existentes nos quedamos con la más reciente *Alpine*. Con esto se puede ir a la página [GTFOBins](https://gtfobins.github.io/gtfobins/docker/) para *bypasear* el binario *Docker* y realizar la escalada de privilegios.
 
 <code>docker images</code>
 
