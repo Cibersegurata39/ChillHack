@@ -93,21 +93,21 @@ Una vez hecho esto se comprueba el usuario alcanzado y su id.
 
 ![image](https://github.com/user-attachments/assets/45d7d820-8d96-442d-9c63-f16b6a56bee9)
 
-Ahora ya se tienen los suficientes permisos para leer el archivo 'local.txt' (/home/apaar) donde se encuentra la primera de las *flags*.
+Ahora ya se tienen los suficientes permisos para leer el archivo 'local.txt' (/home/apaar), donde se encuentra la primera de las *flags*.
 
 **Flag: {USER-FLAG: e8vpd3323cfvlp0qpxxx9qtr5iq37oww}**
 
-A continuación se inspecciona el contenido del directorio '/var/www/files' en el cual hay un archivo *php* llamado 'hacker.php' que se puede ejecutar con el usuario Apaar. En este se nombra la imagen 'hacker-with-laptop_23-2147985341.jpg' y nos induce a analizarla más allá de lo que pueda mostrar a simple vista. Una referencia clara a buscar información oculta en la imagen por medio de esteganografía.
+A continuación se inspecciona el contenido del directorio '/var/www/files', en el cual hay un archivo *php* llamado 'hacker.php' que se puede ejecutar con el usuario Apaar. En este se nombra la imagen 'hacker-with-laptop_23-2147985341.jpg' y nos induce a analizarla más allá de lo que pueda mostrar a simple vista. Una referencia clara a buscar información oculta en la imagen por medio de esteganografía.
 
 ![Captura de pantalla 2025-04-13 213653](https://github.com/user-attachments/assets/52295999-99d8-499c-8ef8-48722fa0706f)
 
-Así pues, primero se debe descargar la imagen creando un servidor desde la carpeta contenedora de la imagen con el módulo *http.server*, de **Python3**. Se indica el puerto en el que se hospedará el servidor y desde el navegador se puede comprobar la creación del servidor y la existencia de la imagen y el resto de archivos del directorio en cuestión.
+Así pues, primero se debe descargar la imagen creando un servidor desde la carpeta contenedora de la imagen con el módulo *http.server*, de **Python3**, e indicando el puerto en el que se hospedará el servidor. Desde el navegador se puede comprobar su creación y la existencia de la imagen junto con el resto de archivos del directorio en cuestión.
 
 <code> python3 -m http.server 8000</code>
 
 ![Captura de pantalla 2025-04-13 214254](https://github.com/user-attachments/assets/a45013b7-436a-4c73-a04e-4758747414f1)
 
-Desde la máquina atacante se procede a descargar el *jpg*, indicando la dirección del recurso. Seguidamente se extrae la información de la imagen con la herramienta **Steghide**, la cual vuelca los datos en el archivo 'backup.zip'. Este se puede descomprimir con la herramienta **unzip** pero está protegido con contraseña, por lo que será necesario encontrar esta primero. Inicialmente se saca el *hash* del archivo con el binario **zip2john** y después se trabajará con este.
+Desde la máquina atacante se procede a descargar el *jpg*, indicando la dirección del recurso. Seguidamente se extrae la información de la imagen con la herramienta **Steghide**, la cual vuelca los datos en el archivo 'backup.zip'. Se puede descomprimir con la herramienta **unzip** pero está protegido con contraseña, por lo que será necesario encontrar esta primero. Inicialmente se saca el *hash* del archivo con el binario **zip2john** y después se trabajará con él.
 
 <code>wget http://10.10.118.151:8000/hacker-with-laptop_23-2147985341.jpg</code>
 
@@ -119,7 +119,7 @@ Desde la máquina atacante se procede a descargar el *jpg*, indicando la direcci
 
 ![Captura de pantalla 2025-04-13 215809](https://github.com/user-attachments/assets/0a35f730-e470-4fd8-954f-b27e4078ad1d)
 
-Con **John** se prueban las diferentes palabras de la lista 'rockyou.txt' con el archivo 'pwd' que contiene el *hash* antes obtenido. Finalmente, la herramiensta encuentra la contraseña siendo esta 'pass1word'. Ahora ya se puede descomprimir el *zip* indicándole la *password* encontrada con el cual conseguimos el archivo 'source_code.php'. 
+Con **John** se prueban las diferentes palabras de la lista 'rockyou.txt' contra el archivo 'pwd' que contiene el *hash* antes obtenido. Finalmente, la herramienta encuentra la contraseña, siendo esta 'pass1word'. Ahora ya se puede descomprimir el *zip* indicándole la *password* encontrada y consiguiendo el archivo 'source_code.php'. 
 
 <code>john --wordlist=/usr/share/wordlists/rockyou.txt pwd</code>
 
