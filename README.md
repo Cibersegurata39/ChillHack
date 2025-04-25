@@ -17,7 +17,7 @@ Máquina resuelta de *TryHackMe* en la que se trabaja la enumeración y *fingerp
 
 ## Objetivo
 
-Explicar la realización del siguiente _Capture the flag_ perteneciente a la plataforma *TryHackMe*. Este desafío . Para ello, se deberá interactuar con un formulario, penetrar en la máquina y realizar una escalada de privilegios.
+Explicar la realización del siguiente _Capture the flag_ perteneciente a la plataforma *TryHackMe*. Para ello, se deberá interactuar con un formulario, penetrar en la máquina y realizar una escalada de privilegios.
 
 ## Que hemos aprendido?
 
